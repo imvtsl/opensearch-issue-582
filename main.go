@@ -44,6 +44,7 @@ func main() {
 	index := "movies"
 	ctx := context.Background()
 
+	// Run this program again to get resource_already_exists_exception response
 	indexCreateResp, err := client.Indices.Create(ctx, opensearchapi.IndicesCreateReq{Index: index})
 	if err != nil {
 		fmt.Println(err.Error())
@@ -72,6 +73,7 @@ func main() {
 	}
 	fmt.Printf("Delete Index, Ignore Unavailable true:\n%s\n", respAsJson)
 
+	// with ignore unavailable as false, it returns index_not_found_exception response
 	indexDeleteResp, err = client.Indices.Delete(ctx,
 		opensearchapi.IndicesDeleteReq{
 			Indices: []string{"games"},
@@ -107,6 +109,7 @@ func main() {
 	}
 	fmt.Printf("Create Doc:\n%s\n", respAsJson)
 
+	// Run this program again to get version_conflict_engine_exception response
 	docCreateResp, err = client.Document.Create(
 		ctx,
 		opensearchapi.DocumentCreateReq{
@@ -134,6 +137,7 @@ func main() {
 	}
 	fmt.Printf("Del Doc:\n%s\n", respAsJson)
 
+	// In case of error in delete, the server gives response in different format when compared to errors in other API like create index, delete index, etc.
 	docDelResp, err = client.Document.Delete(ctx, opensearchapi.DocumentDeleteReq{Index: "movies", DocumentID: "3"})
 	if err != nil {
 		fmt.Println(err)
